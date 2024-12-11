@@ -3,6 +3,16 @@
 		<title>Hola Mundo</title>
 	</head>
 	<body>
-		<p>Hola mundo</p>
+		<nav>
+			<ul>
+				<li><a href="{{ path('sym_index') }}">Proyecto</a></li>
+				<li><a href="{{ path('sym_about') }}">Acerca de...</a></li>
+			</ul>
+		</nav>
+
+		<h1>Hola
+			{{ nombre }}!!</h1>
+		<p>{{ saludo }}!!</p>
+
 	</body>
 </html>
