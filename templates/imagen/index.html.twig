@@ -1,28 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ImagenController!
-{% endblock %}
+{% block title %}Imagen index{% endblock %}
 
 {% block principal %}
-	<div class="imagenes_galeria">
-		<table border="1" class="table">
-			<th scope="col">Nombre</th>
-			<th scope="col">Descripción</th>
-			<th scope="col">N.Likes</th>
-			<th scope="col">N.Visualizaciones</th>
-			<th scope="col">N.Descargas</th>
-			{% for imagen in imagenes %}
-				<tr>
-					<td>{{ imagen.getNombre() }}</td>
-					<td>{{ imagen.getDescripcion() }}</td>
-					<td>{{ imagen.getNumLike() }}</td>
-					<td>{{ imagen.getNumVisualizaviones() }}</td>
-					<td>{{ imagen.getNumDownload() }}</td>
-					<td>
-						<a href="{{ path('sym_imagen_show', { id: imagen.getId() }) }}" data-toggle="tooltip" data-originaltitle="More information">{{ imagen.getNombre() }}</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
-	</div>
+    <h1>Imagen index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Categoria</th>
+                <th>NumVisualizaviones</th>
+                <th>NumLike</th>
+                <th>NumDownload</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for imagen in imagens %}
+            <tr>
+                <td>{{ imagen.id }}</td>
+                <td>{{ imagen.nombre }}</td>
+                <td>{{ imagen.descripcion }}</td>
+                <td>{{ imagen.categoria }}</td>
+                <td>{{ imagen.numVisualizaviones }}</td>
+                <td>{{ imagen.numLike }}</td>
+                <td>{{ imagen.numDownload }}</td>
+                <td>
+                    <a href="{{ path('app_imagen_show', {'id': imagen.id}) }}">show</a>
+                    <a href="{{ path('app_imagen_edit', {'id': imagen.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_imagen_new') }}">Create new</a>
 {% endblock %}
