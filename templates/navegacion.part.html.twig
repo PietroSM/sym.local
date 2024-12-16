@@ -51,6 +51,16 @@
 				</li>
 
 
+				{% if app.request.pathinfo=='/imagen' %}
+					<li class="active lien">
+				{% else %}
+					<li class="lien">
+				{% endif %}
+					<a href={{ path('sym_imagen') }}>
+					<i class="fa sr-icons"></i>Imagen</a>
+				</li>
+
+
 			</ul>
 		</div>
 	</div>

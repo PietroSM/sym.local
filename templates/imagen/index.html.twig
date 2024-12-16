@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ImagenController!
+{% endblock %}
+
+{% block principal %}
+	<div class="imagenes_galeria">
+		<table border="1" class="table">
+			<th scope="col">Nombre</th>
+			<th scope="col">Descripción</th>
+			<th scope="col">N.Likes</th>
+			<th scope="col">N.Visualizaciones</th>
+			<th scope="col">N.Descargas</th>
+			{% for imagen in imagenes %}
+				<tr>
+					<td>{{ imagen.getNombre() }}</td>
+					<td>{{ imagen.getDescripcion() }}</td>
+					<td>{{ imagen.getNumLike() }}</td>
+					<td>{{ imagen.getNumVisualizaviones() }}</td>
+					<td>{{ imagen.getNumDownload() }}</td>
+					<td>
+						<a href="{{ path('sym_imagen_show', { id: imagen.getId() }) }}" data-toggle="tooltip" data-originaltitle="More information">{{ imagen.getNombre() }}</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}

@@ -8,6 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ImagenRepository::class)]
 class Imagen
 {
+    const RUTA_IMAGENES_PORTFOLIO = '/images/index/portfolio/';
+    const RUTA_IMAGENES_GALERIA = '/images/index/gallery/';
+    const RUTA_IMAGENES_CLIENTES = '/images/clients/';
+    const RUTA_IMAGENES_SUBIDAS = '/images/galeria/';
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,6 +36,25 @@ class Imagen
 
     #[ORM\Column(nullable: true)]
     private ?int $numDownload = null;
+
+
+
+    public function __construct(
+        $nombre = "",
+        $descripcion = "",
+        $categoria = 1,
+        $numVisualizaviones = 0,
+        $numLikes = 0,
+        $numDownload = 0,
+    ) {
+        $this->id = null;
+        $this->nombre = $nombre;
+        $this->descripcion  = $descripcion;
+        $this->categoria = $categoria;
+        $this->numVisualizaviones = $numVisualizaviones;
+        $this->numLikes = $numLikes;
+        $this->numDownload = $numDownload;
+    }
 
     public function getId(): ?int
     {
@@ -106,5 +131,23 @@ class Imagen
         $this->numDownload = $numDownload;
 
         return $this;
+    }
+
+
+    public function getUrlPortfolio()
+    {
+        return self::RUTA_IMAGENES_PORTFOLIO . $this->getNombre();
+    }
+    public function getUrlGaleria()
+    {
+        return self::RUTA_IMAGENES_GALERIA . $this->getNombre();
+    }
+    public function getUrlClientes()
+    {
+        return self::RUTA_IMAGENES_CLIENTES . $this->getNombre();
+    }
+    public function getUrlSubidas()
+    {
+        return self::RUTA_IMAGENES_SUBIDAS . $this->getNombre();
     }
 }
