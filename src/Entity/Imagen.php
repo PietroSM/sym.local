@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImagenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImagenRepository::class)]
 class Imagen
@@ -20,6 +21,11 @@ class Imagen
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    /**
+     * @Assert\File(
+     * mimeTypes={"image/jpeg","image/png"},
+     * mimeTypesMessage = "Solamente se permiten archivos jpeg o png.")
+     */
     private ?string $nombre = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -37,6 +43,9 @@ class Imagen
     #[ORM\Column(nullable: true)]
     private ?int $numDownload = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $password = null;
+
 
 
     public function __construct(
@@ -46,6 +55,7 @@ class Imagen
         $numVisualizaviones = 0,
         $numLikes = 0,
         $numDownload = 0,
+        $password = ""
     ) {
         $this->id = null;
         $this->nombre = $nombre;
@@ -54,6 +64,7 @@ class Imagen
         $this->numVisualizaviones = $numVisualizaviones;
         $this->numLikes = $numLikes;
         $this->numDownload = $numDownload;
+        $this->password = $password;
     }
 
     public function getId(): ?int
@@ -149,5 +160,17 @@ class Imagen
     public function getUrlSubidas()
     {
         return self::RUTA_IMAGENES_SUBIDAS . $this->getNombre();
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
     }
 }

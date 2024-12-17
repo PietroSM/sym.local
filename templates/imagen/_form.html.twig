@@ -1,4 +1,39 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="container">
+	<div class="my-custom-class-for-errors">
+		{{ form_errors(form) }}
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			{{ form_row(form.nombre) }}
+		</div>
+		<div class="col-md-4">
+			{{ form_row(form.categoria) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{{ form_row(form.descripcion) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{{ form_row(form.password) }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			{{ form_row(form.numVisualizaviones) }}
+		</div>
+		<div class="col-md-4">
+			{{ form_row(form.numLike) }}
+		</div>
+		<div class="col-md-4">
+			{{ form_row(form.numDownload) }}
+		</div>
+	</div>
+	<div class="row">
+		<button class="btn">{{ button_label|default('Guardar') }}</button>
+	</div>
+</div>
 {{ form_end(form) }}
