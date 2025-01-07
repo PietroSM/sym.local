@@ -7,6 +7,7 @@ use App\Form\ImagenType;
 use App\Repository\ImagenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -67,6 +68,17 @@ final class ImagenController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // $file almacena el archivo subido
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $form['nombre']->getData();
+            // Generamos un nombre único
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            // Move the file to the directory where brochures are stored
+            $file->move($this->getParameter('images_directory_subidas'), $fileName);
+            // Actualizamos el nombre del archivo en el objeto imagen al nuevo generado
+            $imagen->setNombre($fileName);
+
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_imagen_index', [], Response::HTTP_SEE_OTHER);
@@ -88,4 +100,13 @@ final class ImagenController extends AbstractController
 
         return $this->redirectToRoute('app_imagen_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}', name: 'app_imagen_delete_json', methods: ['DELETE'])]
+    public function deleteJson(Imagen $imagen, ImagenRepository $imagenRepository): Response
+    {
+        $imagenRepository->remove($imagen, true);
+        return new JsonResponse(['eliminado' => true]);
+    }
+
+    
 }
