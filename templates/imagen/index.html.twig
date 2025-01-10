@@ -6,13 +6,25 @@
 {% block principal %}
 	<h1>Imagen index</h1>
 
+	<form action="{{ path('app_imagen_index_busqueda') }}" method="post">
+		<label>Búsqueda:</label>
+		<input type="text" name="busqueda" id="busqueda" value="">
+		<input type="submit" value="Buscar">
+	</form>
+
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>
+					<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'id'}) }}">Id</a>
+				</th>
 				<th>Imagen</th>
-				<th>Descripcion</th>
-				<th>Categoria</th>
+				<th>
+					<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'descripcion'}) }}">Descripcion</a>
+				</th>
+				<th>
+					<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'categoria'}) }}">Categoria</a>
+				</th>
 				<th>NumVisualizaviones</th>
 				<th>NumLike</th>
 				<th>NumDownload</th>

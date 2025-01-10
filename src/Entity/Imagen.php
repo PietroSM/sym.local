@@ -32,9 +32,6 @@ class Imagen
     private ?string $descripcion = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $categoria = null;
-
-    #[ORM\Column(nullable: true)]
     private ?int $numVisualizaviones = null;
 
     #[ORM\Column(nullable: true)]
@@ -46,12 +43,13 @@ class Imagen
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $password = null;
 
+    #[ORM\ManyToOne(inversedBy: 'imagens')]
+    private ?Categoria $categoria = null;
 
 
     public function __construct(
         $nombre = "",
         $descripcion = "",
-        $categoria = 1,
         $numVisualizaviones = 0,
         $numLikes = 0,
         $numDownload = 0,
@@ -60,7 +58,6 @@ class Imagen
         $this->id = null;
         $this->nombre = $nombre;
         $this->descripcion  = $descripcion;
-        $this->categoria = $categoria;
         $this->numVisualizaviones = $numVisualizaviones;
         $this->numLikes = $numLikes;
         $this->numDownload = $numDownload;
@@ -92,18 +89,6 @@ class Imagen
     public function setDescripcion(?string $descripcion): static
     {
         $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    public function getCategoria(): ?int
-    {
-        return $this->categoria;
-    }
-
-    public function setCategoria(?int $categoria): static
-    {
-        $this->categoria = $categoria;
 
         return $this;
     }
@@ -170,6 +155,18 @@ class Imagen
     public function setPassword(?string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getCategoria(): ?Categoria
+    {
+        return $this->categoria;
+    }
+
+    public function setCategoria(?Categoria $categoria): static
+    {
+        $this->categoria = $categoria;
 
         return $this;
     }

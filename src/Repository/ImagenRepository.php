@@ -24,6 +24,25 @@ class ImagenRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Imagen[] Returns an array of Imagen objects
+     */
+    public function findLikeDescripcion(string $value): array
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->Where($qb->expr()->like('i.descripcion', ':val'))->setParameter('val', '%' . $value . '%');
+        return $qb->getQuery()->getResult();
+    }
+
+
+    public function findImagenesConCategoria(string $ordenacion, string $tipoOrdenacion)
+    {
+        $qb = $this->createQueryBuilder('imagen');
+        $qb->addSelect('categoria')
+            ->innerJoin('imagen.categoria', 'categoria')
+            ->orderBy('imagen.' . $ordenacion, $tipoOrdenacion);
+        return $qb->getQuery()->getResult();
+    }
 
 
     //    /**

@@ -2,16 +2,17 @@
 
 namespace App\Form;
 
+use App\Entity\Categoria;
 use App\Entity\Imagen;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class ImagenType extends AbstractType
 {
@@ -38,19 +39,9 @@ class ImagenType extends AbstractType
                 'required' => false,
                 'label_attr' => ['class' => 'etiqueta']
             ])
-            ->add('categoria', NumberType::class, [
-                'label' => 'Categoría:',
-                'label_attr' => ['class' => 'etiqueta', 'value' => '1'],
-                'data' => '1'
+            ->add('categoria', EntityType::class, [
+                'class'=>Categoria::class
             ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'Las contraseñas deben coincidir.',
-                'required' => true,
-                'first_options' => ['label' => 'Password', 'label_attr' => ['class' => 'etiqueta']],
-                'second_options' => ['label' => 'Repetir Password', 'label_attr' => ['class' => 'etiqueta']],
-            ])
-
             ->add('numVisualizaviones',  NumberType::class)
             ->add('numLike',  NumberType::class)
             ->add('numDownload',  NumberType::class)
