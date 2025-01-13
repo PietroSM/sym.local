@@ -26,9 +26,14 @@
 		<div class="col-md-4">
 			{{ form_row(form.numDownload) }}
 		</div>
+		<div class="col-md-3">
+ 			{{ form_row(form.fecha,{'label':'Fecha de creación:','label_attr': {'class':'etiqueta'}}) }}
+ 		</div>
 	</div>
 	<div class="row">
 		<button class="btn">{{ button_label|default('Guardar') }}</button>
 	</div>
 </div>
+{{ form_errors(form) }}
+
 {{ form_end(form) }}
