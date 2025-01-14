@@ -24,6 +24,7 @@
 			<div class="etiqueta">{{ error.messageKey|trans(error.messageData, 'security') }}</div><br>
 		{% endif %}
 		<form action="{{ path('app_login') }}" method="post">
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 			<label for="username">Usuario:</label>
 			<input type="text" id="username" name="_username" value="{{ last_username }}">
 			<label for="password">Password:</label>
