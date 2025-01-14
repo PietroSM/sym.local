@@ -8,6 +8,7 @@ use App\Form\ImagenType;
 use App\Repository\ImagenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +49,10 @@ final class ImagenController extends AbstractController
             $file->move($this->getParameter('images_directory_subidas'), $fileName);
             // Actualizamos el nombre del archivo en el objeto imagen al nuevo generado
             $imagen->setNombre($fileName);
+            //Actualizamos el id del usuario que añade la imagen
+            $usuario = $this->getUser();
+            $imagen->setUsuario($usuario);
+
 
             $entityManager->persist($imagen);
             $entityManager->flush(); //força a guardar l'informació en cache
@@ -63,13 +68,14 @@ final class ImagenController extends AbstractController
     }
 
     #[Route('/busqueda', name: 'app_imagen_index_busqueda', methods: ['POST'])]
-    public function busqueda(Request $request, ImagenRepository $imagenRepository): Response
+    public function busqueda(Request $request, ImagenRepository $imagenRepository, Security $security): Response
     {
         $busqueda = $request->request->get('busqueda');
         $fechaInicial = $request->request->get('fechaInicial');
         $fechaFinal = $request->request->get('fechaFinal');
+        $usuarioLogueado = $security->getUser();
 
-        $imagenes = $imagenRepository->findImagenes($busqueda, $fechaInicial, $fechaFinal);
+        $imagenes = $imagenRepository->findImagenes($busqueda, $fechaInicial, $fechaFinal, $usuarioLogueado);
         return $this->render('imagen/index.html.twig', [
             'imagens' => $imagenes,
             'busqueda' => $busqueda,

@@ -50,6 +50,10 @@ class Imagen
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;
 
+    #[ORM\ManyToOne(inversedBy: 'imagens')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $usuario = null;
+
 
     public function __construct(
         $nombre = "",
@@ -183,6 +187,18 @@ class Imagen
     public function setFecha(\DateTimeInterface $fecha): static
     {
         $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?User
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?User $usuario): static
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }

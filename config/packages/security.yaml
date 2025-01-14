@@ -40,6 +40,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER PUBLIC_ACCESS}
         # Necesario ROLE_ADMIN el acceso a /imagen*
+        - { path: ^/imagen, roles: ROLE_USER }
         - { path: ^/imagen/new, roles: ROLE_ADMIN }
         - { path: ^/imagen/edit, roles: ROLE_ADMIN }
         - { path: ^/imagen/delete, roles: ROLE_ADMIN }
