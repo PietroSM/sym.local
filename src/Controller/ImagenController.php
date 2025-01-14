@@ -90,7 +90,7 @@ final class ImagenController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_imagen_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_imagen_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Imagen $imagen, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ImagenType::class, $imagen);
