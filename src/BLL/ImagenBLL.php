@@ -2,22 +2,25 @@
 
 namespace App\BLL;
 
+use App\Entity\Categoria;
+use App\Entity\Imagen;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
-use App\Repository\ImagenRepository;
+use DateTime;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class ImagenBLL
+class ImagenBLL extends BaseBLL
 {
-    private RequestStack $requestStack;
-    private ImagenRepository $imagenRepository;
-    private Security $security;
 
-    public function __construct(RequestStack $requestStack, ImagenRepository $imagenRepository, Security $security)
+    public function setRequestStack(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
-        $this->imagenRepository = $imagenRepository;
+    }
+    public function setSecurity(Security $security)
+    {
         $this->security = $security;
     }
+
     public function getImagenesConOrdenacion(?string $ordenacion)
     {
         if (!is_null($ordenacion)) { // Cuando se establece un tipo de ordenación específico
@@ -41,5 +44,56 @@ class ImagenBLL
         }
         $usuarioLogueado = $this->security->getUser();
         return $this->imagenRepository->findImagenesConCategoria($ordenacion, $tipoOrdenacion, $usuarioLogueado);
+    }
+
+
+    public function nueva(array $data)
+    {
+        $imagen = new Imagen();
+        $imagen->setNombre($data['nombre']);
+        $imagen->setDescripcion($data['descripcion']);
+        $imagen->setNumVisualizaviones($data['numVisualizaciones']);
+        $imagen->setNumLike($data['numLikes']);
+        $imagen->setNumDownload($data['numDownloads']);
+        // El id de la categoria, la tenemos que busar en su BBDD
+        $categoria = $this->em->getRepository(Categoria::class)->find($data['categoria']);
+        $imagen->setCategoria($categoria);
+        $fecha = DateTime::createFromFormat('d/m/Y', $data['fecha']);
+        $imagen->setFecha($fecha);
+        $usuario = $this->em->getRepository(User::class)->find($data['usuario']);
+        $imagen->setUsuario($usuario);
+        return $this->guardaValidando($imagen);
+    }
+
+
+    public function toArray(Imagen $imagen)
+    {
+
+        if (is_null($imagen))
+            return null;
+
+        $a = [
+            'id' => $imagen->getId(),
+            'nombre' => $imagen->getNombre(),
+            'descripcion' => $imagen->getDescripcion(),
+            'categoria' => $imagen->getCategoria()->getNombre(),
+            'numLikes' => $imagen->getNumLike(),
+            'numVisualizaciones' => $imagen->getNumVisualizaviones(),
+            'numDownloads' => $imagen->getNumDownload(),
+            'fecha' => is_null($imagen->getFecha()) ? '' : $imagen->getFecha()->format('d/m/Y'),
+            'usuario' => $imagen->getUsuario()->getId()
+        ];
+
+        return [
+            'id' => $imagen->getId(),
+            'nombre' => $imagen->getNombre(),
+            'descripcion' => $imagen->getDescripcion(),
+            'categoria' => $imagen->getCategoria()->getNombre(),
+            'numLikes' => $imagen->getNumLike(),
+            'numVisualizaciones' => $imagen->getNumVisualizaviones(),
+            'numDownloads' => $imagen->getNumDownload(),
+            'fecha' => is_null($imagen->getFecha()) ? '' : $imagen->getFecha()->format('d/m/Y'),
+            'usuario' => $imagen->getUsuario()->getId()
+        ];
     }
 }

@@ -19,7 +19,7 @@ class DefaultController extends AbstractController
     }
 
 
-    public function abaut() {
+    public function about() {
         return $this->render('prueba1.html.twig');
     }
 
